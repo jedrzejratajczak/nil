@@ -1,0 +1,12 @@
+[package]
+name = "hyprnotify"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+gtk4 = { version = "0.11", features = ["v4_12"] }
+gtk4-layer-shell = "0.8"
+glib = "0.22"
+zbus = "5"
+async-io = "2"
+signal-hook = "0.3"

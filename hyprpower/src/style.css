@@ -1,0 +1,29 @@
+window {
+    background-color: #100e07;
+}
+
+.dark-overlay {
+    background-color: rgba(0, 0, 0, 0.65);
+}
+
+.power-button {
+    all: unset;
+    min-width: 280px;
+    min-height: 300px;
+}
+
+.power-button image {
+    -gtk-icon-size: 160px;
+    transition: -gtk-icon-size 200ms ease-in-out;
+}
+
+.power-button.selected image {
+    -gtk-icon-size: 192px;
+}
+
+.power-button label {
+    font-family: "CaskaydiaCove Nerd Font", monospace;
+    font-size: 16px;
+    color: #e8e2d4;
+    margin-top: 16px;
+}

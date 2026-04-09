@@ -1,0 +1,14 @@
+[workspace]
+resolver = "2"
+members = [
+    "hyprgreeter",
+    "hyprnotify",
+    "hyprpower",
+    "hyprwall",
+    "hyprwidgets",
+]
+
+[profile.release]
+lto = true
+strip = true
+opt-level = "z"

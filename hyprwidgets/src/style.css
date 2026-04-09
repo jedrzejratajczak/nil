@@ -1,0 +1,119 @@
+window {
+    background-color: transparent;
+}
+
+.widget-panel {
+    background-color: rgba(13, 13, 13, 0.55);
+    border-right: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 24px 20px;
+    min-width: 200px;
+}
+
+/* Section titles */
+.section-title {
+    font-family: "CaskaydiaCove Nerd Font", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+}
+
+/* System monitor values */
+.sysmon-value {
+    font-family: "CaskaydiaCove Nerd Font", monospace;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* Temperature names */
+.temp-name {
+    font-family: "CaskaydiaCove Nerd Font", monospace;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.55);
+}
+
+/* Temperature values */
+.temp-value {
+    font-family: "CaskaydiaCove Nerd Font", monospace;
+    font-size: 14px;
+}
+
+.temp-ok { color: #8ec07c; }
+.temp-warm { color: #fabd2f; }
+.temp-hot { color: #fb4934; }
+
+/* Weather */
+.weather-icon {
+    font-size: 36px;
+    margin-top: 4px;
+    margin-bottom: 2px;
+}
+
+.weather-temp {
+    font-family: "CaskaydiaCove Nerd Font", monospace;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* Disk bar */
+.disk-bar {
+    min-height: 6px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-top: 4px;
+}
+
+.disk-bar-fill {
+    min-height: 6px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 3px;
+}
+
+/* Calendar */
+.cal-month {
+    font-family: "CaskaydiaCove Nerd Font", monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 4px;
+}
+
+.cal-header {
+    font-family: "CaskaydiaCove Nerd Font", monospace;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.35);
+    min-width: 24px;
+    min-height: 20px;
+}
+
+.cal-day {
+    font-family: "CaskaydiaCove Nerd Font", monospace;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.55);
+    min-width: 24px;
+    min-height: 20px;
+}
+
+.cal-today {
+    color: white;
+    font-weight: 700;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+}
+
+.cal-other-month {
+    color: rgba(255, 255, 255, 0.15);
+}
+
+.cal-weekend {
+    color: rgba(255, 255, 255, 0.35);
+}
+
+/* Separator between sections */
+.section-sep {
+    min-height: 1px;
+    background-color: rgba(255, 255, 255, 0.07);
+    margin-top: 16px;
+    margin-bottom: 12px;
+}

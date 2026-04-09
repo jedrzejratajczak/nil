@@ -1,0 +1,68 @@
+window.background {
+    background-color: rgba(0, 0, 0, 0.55);
+    padding: 76px 34px;
+}
+
+flowboxchild {
+    border-radius: 10px;
+    padding: 0;
+    margin: 4px;
+    background: transparent;
+    outline: none;
+    border: none;
+}
+
+flowboxchild:selected,
+flowboxchild:focus,
+flowboxchild:focus:selected {
+    background: transparent;
+    outline: none;
+    border: none;
+}
+
+.wallpaper-cell {
+    background-color: @wp_surface_container;
+    border-radius: 10px;
+    padding: 6px;
+    border: 3px solid transparent;
+    transition: all 150ms ease;
+}
+
+flowboxchild:selected .wallpaper-cell {
+    background-color: @wp_surface_container_high;
+    border: 3px solid @wp_primary;
+}
+
+.wallpaper-thumb-frame {
+    border-radius: 6px;
+}
+
+.wallpaper-name {
+    font-size: 10px;
+    color: alpha(@wp_on_surface, 0.6);
+    margin-top: 6px;
+    margin-bottom: 2px;
+}
+
+flowboxchild:selected .wallpaper-name {
+    color: @wp_on_surface;
+}
+
+.target-tile {
+    min-width: 280px;
+    min-height: 200px;
+    border-radius: 16px;
+    font-size: 22px;
+    font-weight: bold;
+    background-color: @wp_surface_container;
+    color: @wp_on_surface;
+    border: 3px solid @wp_outline_variant;
+    transition: all 150ms ease;
+}
+
+.target-tile:hover,
+.target-tile:focus {
+    background-color: @wp_primary_container;
+    color: @wp_on_primary_container;
+    border: 3px solid @wp_primary;
+}
