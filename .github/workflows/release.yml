@@ -47,3 +47,61 @@ jobs:
           files: |
             nil-${{ github.ref_name }}-x86_64.tar.gz
           generate_release_notes: true
+
+  publish-aur:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - name: nilgreeter
+            desc: "Minimal GTK4 greeter for greetd on Hyprland"
+            deps: "'gtk4' 'greetd'"
+          - name: nilnotify
+            desc: "Lightweight GTK4 notification daemon for Hyprland"
+            deps: "'gtk4' 'gtk4-layer-shell'"
+          - name: nilpower
+            desc: "GTK4 power menu overlay for Hyprland"
+            deps: "'gtk4' 'gtk4-layer-shell'"
+          - name: nilwall
+            desc: "GTK4 wallpaper manager for Hyprland"
+            deps: "'gtk4' 'gtk4-layer-shell'"
+          - name: nilwidgets
+            desc: "GTK4 system monitoring widgets for Hyprland"
+            deps: "'gtk4' 'gtk4-layer-shell'"
+
+    steps:
+      - name: Generate PKGBUILD
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          cat > PKGBUILD << 'PKGEOF'
+          # Maintainer: Jedrzej Ratajczak <mrozelek@gmail.com>
+          pkgname=${{ matrix.package.name }}-bin
+          pkgver=VERSION_PLACEHOLDER
+          pkgrel=1
+          pkgdesc="${{ matrix.package.desc }}"
+          arch=('x86_64')
+          url="https://github.com/jedrzejratajczak/nil"
+          license=('MIT')
+          depends=(${{ matrix.package.deps }})
+          provides=('${{ matrix.package.name }}')
+          conflicts=('${{ matrix.package.name }}')
+          source=("${pkgname%-bin}-${pkgver}.tar.gz::https://github.com/jedrzejratajczak/nil/releases/download/v${pkgver}/nil-v${pkgver}-x86_64.tar.gz")
+          sha256sums=('SKIP')
+
+          package() {
+              install -Dm755 "${{ matrix.package.name }}" "${pkgdir}/usr/bin/${{ matrix.package.name }}"
+          }
+          PKGEOF
+          sed -i "s/VERSION_PLACEHOLDER/${VERSION}/" PKGBUILD
+          sed -i 's/^          //' PKGBUILD
+
+      - name: Publish to AUR
+        uses: KSXGitHub/github-actions-deploy-aur@v3.0.1
+        with:
+          pkgname: ${{ matrix.package.name }}-bin
+          pkgbuild: ./PKGBUILD
+          commit_username: jedrzejratajczak
+          commit_email: mrozelek@gmail.com
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: "Update to ${{ github.ref_name }}"
