@@ -4,7 +4,7 @@ use gtk::prelude::*;
 use gtk4 as gtk;
 use std::time::{Duration, SystemTime};
 
-const GIF_PATH: &str = "/usr/share/hyprgreeter/background.gif";
+const GIF_PATH: &str = "/usr/share/nilgreeter/background.gif";
 
 pub struct Widgets {
     pub window: gtk::ApplicationWindow,

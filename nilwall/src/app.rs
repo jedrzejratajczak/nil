@@ -13,7 +13,7 @@ use crate::thumbnail;
 use crate::wallpaper;
 
 const COLUMNS: u32 = 3;
-const GREETER_BG: &str = "/usr/share/hyprgreeter/background.gif";
+const GREETER_BG: &str = "/usr/share/nilgreeter/background.gif";
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum Target {
@@ -54,7 +54,7 @@ struct State {
 
 pub fn run() {
     let app = gtk::Application::builder()
-        .application_id("dev.mrozelek.hyprwall")
+        .application_id("dev.mrozelek.nilwall")
         .flags(gtk::gio::ApplicationFlags::NON_UNIQUE)
         .build();
 
@@ -62,7 +62,7 @@ pub fn run() {
         let display = gdk::Display::default().expect("no display");
 
         let colors_path = format!(
-            "{}/.config/hyprwall/colors.css",
+            "{}/.config/nilwall/colors.css",
             std::env::var("HOME").unwrap_or_default()
         );
         if std::path::Path::new(&colors_path).exists() {
@@ -287,13 +287,13 @@ fn hide(state: &mut State) {
 fn create_window(app: &gtk::Application) -> gtk::Window {
     let window = gtk::Window::builder()
         .application(app)
-        .title("hyprwall")
+        .title("nilwall")
         .build();
 
     window.init_layer_shell();
     window.set_layer(gtk4_layer_shell::Layer::Overlay);
     window.set_keyboard_mode(gtk4_layer_shell::KeyboardMode::Exclusive);
-    window.set_namespace(Some("hyprwall"));
+    window.set_namespace(Some("nilwall"));
     window.set_exclusive_zone(-1);
 
     use gtk4_layer_shell::Edge;

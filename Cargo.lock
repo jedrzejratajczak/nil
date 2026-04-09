@@ -874,64 +874,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6dbf3de79e51f3d586ab4cb9d5c3e2c14aa28ed23d180cf89b4df0454a69cc87"
 
 [[package]]
-name = "hyprgreeter"
-version = "0.2.0"
-dependencies = [
- "chrono",
- "greetd_ipc",
- "gtk4",
- "zeroize",
-]
-
-[[package]]
-name = "hyprnotify"
-version = "0.1.0"
-dependencies = [
- "async-io",
- "glib",
- "gtk4",
- "gtk4-layer-shell",
- "signal-hook",
- "zbus",
-]
-
-[[package]]
-name = "hyprpower"
-version = "0.1.0"
-dependencies = [
- "glib",
- "gtk4",
- "gtk4-layer-shell",
-]
-
-[[package]]
-name = "hyprwall"
-version = "0.1.0"
-dependencies = [
- "dirs",
- "futures-channel",
- "futures-util",
- "glib",
- "gtk4",
- "gtk4-layer-shell",
- "libc",
-]
-
-[[package]]
-name = "hyprwidgets"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "glib",
- "gtk4",
- "gtk4-layer-shell",
- "libc",
- "serde",
- "serde_json",
- "ureq",
-]
-
-[[package]]
 name = "iana-time-zone"
 version = "0.1.65"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1051,6 +993,64 @@ checksum = "1fa76a2c86f704bdb222d66965fb3d63269ce38518b83cb0575fca855ebb6316"
 dependencies = [
  "adler2",
  "simd-adler32",
+]
+
+[[package]]
+name = "nilgreeter"
+version = "0.2.0"
+dependencies = [
+ "chrono",
+ "greetd_ipc",
+ "gtk4",
+ "zeroize",
+]
+
+[[package]]
+name = "nilnotify"
+version = "0.1.0"
+dependencies = [
+ "async-io",
+ "glib",
+ "gtk4",
+ "gtk4-layer-shell",
+ "signal-hook",
+ "zbus",
+]
+
+[[package]]
+name = "nilpower"
+version = "0.1.0"
+dependencies = [
+ "glib",
+ "gtk4",
+ "gtk4-layer-shell",
+]
+
+[[package]]
+name = "nilwall"
+version = "0.1.0"
+dependencies = [
+ "dirs",
+ "futures-channel",
+ "futures-util",
+ "glib",
+ "gtk4",
+ "gtk4-layer-shell",
+ "libc",
+]
+
+[[package]]
+name = "nilwidgets"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "glib",
+ "gtk4",
+ "gtk4-layer-shell",
+ "libc",
+ "serde",
+ "serde_json",
+ "ureq",
 ]
 
 [[package]]

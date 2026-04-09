@@ -1,11 +1,11 @@
 [workspace]
 resolver = "2"
 members = [
-    "hyprgreeter",
-    "hyprnotify",
-    "hyprpower",
-    "hyprwall",
-    "hyprwidgets",
+    "nilgreeter",
+    "nilnotify",
+    "nilpower",
+    "nilwall",
+    "nilwidgets",
 ]
 
 [profile.release]

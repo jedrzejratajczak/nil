@@ -36,14 +36,14 @@ jobs:
       - name: Package binaries
         run: |
           mkdir -p release
-          for bin in hyprgreeter hyprnotify hyprpower hyprwall hyprwidgets; do
+          for bin in nilgreeter nilnotify nilpower nilwall nilwidgets; do
             cp target/release/$bin release/
           done
-          cd release && tar czf ../hypr-${GITHUB_REF_NAME}-x86_64.tar.gz *
+          cd release && tar czf ../nil-${GITHUB_REF_NAME}-x86_64.tar.gz *
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            hypr-${{ github.ref_name }}-x86_64.tar.gz
+            nil-${{ github.ref_name }}-x86_64.tar.gz
           generate_release_notes: true

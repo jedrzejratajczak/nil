@@ -103,7 +103,7 @@ fn show_power_menu(app: &gtk::Application, window_ref: &Rc<RefCell<Option<gtk::A
     window.init_layer_shell();
     window.set_layer(gtk4_layer_shell::Layer::Overlay);
     window.set_keyboard_mode(gtk4_layer_shell::KeyboardMode::Exclusive);
-    window.set_namespace(Some("hyprpower"));
+    window.set_namespace(Some("nilpower"));
     window.set_exclusive_zone(-1);
 
     use gtk4_layer_shell::Edge;
@@ -294,7 +294,7 @@ fn main() -> ExitCode {
     let daemon = std::env::args().any(|a| a == "--daemon");
 
     let app = gtk::Application::builder()
-        .application_id("dev.mrozelek.hyprpower")
+        .application_id("dev.mrozelek.nilpower")
         .build();
 
     let css_loaded = Rc::new(Cell::new(false));

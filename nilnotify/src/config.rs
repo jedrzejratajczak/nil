@@ -29,7 +29,7 @@ impl Colors {
         let content = match fs::read_to_string(&path) {
             Ok(c) => c,
             Err(_) => {
-                eprintln!("hyprnotify: could not read {}, using defaults", path.display());
+                eprintln!("nilnotify: could not read {}, using defaults", path.display());
                 return Self::default();
             }
         };
@@ -59,5 +59,5 @@ impl Colors {
 fn colors_path() -> PathBuf {
     let config = std::env::var("XDG_CONFIG_HOME")
         .unwrap_or_else(|_| format!("{}/.config", std::env::var("HOME").unwrap()));
-    PathBuf::from(config).join("hyprnotify/colors")
+    PathBuf::from(config).join("nilnotify/colors")
 }

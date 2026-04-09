@@ -88,7 +88,7 @@ impl NotificationServer {
 
     fn get_server_information(&self) -> (String, String, String, String) {
         (
-            "hyprnotify".into(),
+            "nilnotify".into(),
             "mrozelek".into(),
             env!("CARGO_PKG_VERSION").into(),
             "1.2".into(),

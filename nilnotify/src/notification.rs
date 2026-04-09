@@ -46,7 +46,7 @@ impl NotificationWindow {
         window.init_layer_shell();
         window.set_layer(gtk4_layer_shell::Layer::Overlay);
         window.set_keyboard_mode(gtk4_layer_shell::KeyboardMode::None);
-        window.set_namespace(Some("hyprnotify"));
+        window.set_namespace(Some("nilnotify"));
 
         use gtk4_layer_shell::Edge;
         window.set_anchor(Edge::Top, true);

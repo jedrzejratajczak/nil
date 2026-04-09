@@ -17,7 +17,7 @@ use stack::{NotifyData, Stack};
 
 fn main() -> ExitCode {
     let app = gtk::Application::builder()
-        .application_id("dev.mrozelek.hyprnotify")
+        .application_id("dev.mrozelek.nilnotify")
         .build();
     app.connect_activate(build_ui);
     app.run()
@@ -72,7 +72,7 @@ fn build_ui(app: &gtk::Application) {
         if sigusr1.swap(false, Ordering::Relaxed) {
             let new_colors = Colors::load();
             stack_clone2.borrow_mut().reload_colors(new_colors);
-            eprintln!("hyprnotify: colors reloaded");
+            eprintln!("nilnotify: colors reloaded");
         }
         glib::ControlFlow::Continue
     });

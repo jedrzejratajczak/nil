@@ -16,7 +16,7 @@ const STYLE_CSS: &str = include_str!("style.css");
 
 fn main() -> ExitCode {
     let app = gtk::Application::builder()
-        .application_id("dev.mrozelek.hyprwidgets")
+        .application_id("dev.mrozelek.nilwidgets")
         .build();
     app.connect_activate(build_ui);
     app.run()
@@ -41,7 +41,7 @@ fn build_ui(app: &gtk::Application) {
     window.init_layer_shell();
     window.set_layer(gtk4_layer_shell::Layer::Bottom);
     window.set_keyboard_mode(gtk4_layer_shell::KeyboardMode::None);
-    window.set_namespace(Some("hyprwidgets"));
+    window.set_namespace(Some("nilwidgets"));
     window.set_exclusive_zone(0);
 
     use gtk4_layer_shell::Edge;

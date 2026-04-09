@@ -1,5 +1,5 @@
 [package]
-name = "hyprnotify"
+name = "nilwall"
 version = "0.1.0"
 edition = "2024"
 
@@ -7,6 +7,7 @@ edition = "2024"
 gtk4 = { version = "0.11", features = ["v4_12"] }
 gtk4-layer-shell = "0.8"
 glib = "0.22"
-zbus = "5"
-async-io = "2"
-signal-hook = "0.3"
+libc = "0.2"
+dirs = "6"
+futures-channel = "0.3"
+futures-util = "0.3"
