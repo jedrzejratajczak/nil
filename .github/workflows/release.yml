@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+
+    steps:
+      - name: Install dependencies
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm --needed \
+            base-devel git rustup \
+            gtk4 gtk4-layer-shell \
+            greetd
+
+      - name: Setup Rust
+        run: |
+          rustup default stable
+          rustup target add x86_64-unknown-linux-gnu
+
+      - uses: actions/checkout@v4
+
+      - name: Build all binaries
+        run: cargo build --release
+
+      - name: Package binaries
+        run: |
+          mkdir -p release
+          for bin in hyprgreeter hyprnotify hyprpower hyprwall hyprwidgets; do
+            cp target/release/$bin release/
+          done
+          cd release && tar czf ../hypr-${GITHUB_REF_NAME}-x86_64.tar.gz *
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            hypr-${{ github.ref_name }}-x86_64.tar.gz
+          generate_release_notes: true
