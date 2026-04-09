@@ -61,13 +61,15 @@ jobs:
           pacman -S --noconfirm --needed openssh git pacman
 
       - name: Setup SSH and git
+        env:
+          AUR_SSH_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}" > ~/.ssh/aur
-          chmod 600 ~/.ssh/aur
-          ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts 2>/dev/null
-          printf 'Host aur.archlinux.org\n  IdentityFile ~/.ssh/aur\n  User aur\n' > ~/.ssh/config
-          chmod 600 ~/.ssh/config
+          mkdir -p /root/.ssh
+          echo "$AUR_SSH_KEY" > /root/.ssh/aur
+          chmod 600 /root/.ssh/aur
+          ssh-keyscan -t ed25519 aur.archlinux.org >> /root/.ssh/known_hosts 2>/dev/null
+          printf 'Host aur.archlinux.org\n  IdentityFile /root/.ssh/aur\n  User aur\n  StrictHostKeyChecking accept-new\n' > /root/.ssh/config
+          chmod 600 /root/.ssh/config
           git config --global user.name "jedrzejratajczak"
           git config --global user.email "mrozelek@gmail.com"
 
