@@ -51,57 +51,69 @@ jobs:
   publish-aur:
     needs: build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package:
-          - name: nilgreeter
-            desc: "Minimal GTK4 greeter for greetd on Hyprland"
-            deps: "'gtk4' 'greetd'"
-          - name: nilnotify
-            desc: "Lightweight GTK4 notification daemon for Hyprland"
-            deps: "'gtk4' 'gtk4-layer-shell'"
-          - name: nilpower
-            desc: "GTK4 power menu overlay for Hyprland"
-            deps: "'gtk4' 'gtk4-layer-shell'"
-          - name: nilwall
-            desc: "GTK4 wallpaper manager for Hyprland"
-            deps: "'gtk4' 'gtk4-layer-shell'"
-          - name: nilwidgets
-            desc: "GTK4 system monitoring widgets for Hyprland"
-            deps: "'gtk4' 'gtk4-layer-shell'"
+    container:
+      image: archlinux:latest
 
     steps:
-      - name: Generate PKGBUILD
+      - name: Install tools
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm --needed openssh git pacman
+
+      - name: Setup SSH and git
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}" > ~/.ssh/aur
+          chmod 600 ~/.ssh/aur
+          ssh-keyscan aur.archlinux.org >> ~/.ssh/known_hosts 2>/dev/null
+          printf 'Host aur.archlinux.org\n  IdentityFile ~/.ssh/aur\n  User aur\n' > ~/.ssh/config
+          chmod 600 ~/.ssh/config
+          git config --global user.name "jedrzejratajczak"
+          git config --global user.email "mrozelek@gmail.com"
+
+      - name: Publish packages to AUR
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          cat > PKGBUILD << 'PKGEOF'
+
+          publish() {
+            local pkg="$1" desc="$2" deps="$3"
+
+            git clone ssh://aur@aur.archlinux.org/${pkg}-bin.git /tmp/${pkg}-bin
+            cd /tmp/${pkg}-bin
+
+            cat > PKGBUILD << EOF
           # Maintainer: Jedrzej Ratajczak <mrozelek@gmail.com>
-          pkgname=${{ matrix.package.name }}-bin
-          pkgver=VERSION_PLACEHOLDER
+          pkgname=${pkg}-bin
+          pkgver=${VERSION}
           pkgrel=1
-          pkgdesc="${{ matrix.package.desc }}"
+          pkgdesc="${desc}"
           arch=('x86_64')
           url="https://github.com/jedrzejratajczak/nil"
           license=('MIT')
-          depends=(${{ matrix.package.deps }})
-          provides=('${{ matrix.package.name }}')
-          conflicts=('${{ matrix.package.name }}')
-          source=("${pkgname%-bin}-${pkgver}.tar.gz::https://github.com/jedrzejratajczak/nil/releases/download/v${pkgver}/nil-v${pkgver}-x86_64.tar.gz")
+          depends=(${deps})
+          provides=('${pkg}')
+          conflicts=('${pkg}')
+          source=("\${pkgname%-bin}-\${pkgver}.tar.gz::https://github.com/jedrzejratajczak/nil/releases/download/v\${pkgver}/nil-v\${pkgver}-x86_64.tar.gz")
           sha256sums=('SKIP')
 
           package() {
-              install -Dm755 "${{ matrix.package.name }}" "${pkgdir}/usr/bin/${{ matrix.package.name }}"
+              install -Dm755 "${pkg}" "\${pkgdir}/usr/bin/${pkg}"
           }
-          PKGEOF
-          sed -i "s/VERSION_PLACEHOLDER/${VERSION}/" PKGBUILD
-          sed -i 's/^          //' PKGBUILD
+          EOF
+            sed -i 's/^          //' PKGBUILD
 
-      - name: Publish to AUR
-        uses: KSXGitHub/github-actions-deploy-aur@v3.0.1
-        with:
-          pkgname: ${{ matrix.package.name }}-bin
-          pkgbuild: ./PKGBUILD
-          commit_username: jedrzejratajczak
-          commit_email: mrozelek@gmail.com
-          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
-          commit_message: "Update to ${{ github.ref_name }}"
+            makepkg --printsrcinfo > .SRCINFO
+
+            git add PKGBUILD .SRCINFO
+            git commit -m "Update to v${VERSION}" || true
+            git push origin master
+
+            cd /
+            rm -rf /tmp/${pkg}-bin
+          }
+
+          publish nilgreeter "Minimal GTK4 greeter for greetd on Hyprland" "'gtk4' 'greetd'"
+          publish nilnotify  "Lightweight GTK4 notification daemon for Hyprland" "'gtk4' 'gtk4-layer-shell'"
+          publish nilpower   "GTK4 power menu overlay for Hyprland" "'gtk4' 'gtk4-layer-shell'"
+          publish nilwall    "GTK4 wallpaper manager for Hyprland" "'gtk4' 'gtk4-layer-shell'"
+          publish nilwidgets "GTK4 system monitoring widgets for Hyprland" "'gtk4' 'gtk4-layer-shell'"
