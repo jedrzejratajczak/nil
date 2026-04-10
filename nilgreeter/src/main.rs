@@ -14,7 +14,19 @@ use gtk::prelude::*;
 use gtk4 as gtk;
 use zeroize::Zeroizing;
 
-const USERNAME: &str = "mrozelek";
+fn get_username() -> String {
+    std::env::args()
+        .nth(1)
+        .unwrap_or_else(|| {
+            std::fs::read_dir("/home")
+                .expect("cannot read /home")
+                .filter_map(|e| e.ok())
+                .filter(|e| e.path().is_dir() && e.file_name() != "lost+found")
+                .min_by_key(|e| e.file_name())
+                .map(|e| e.file_name().to_string_lossy().into_owned())
+                .expect("no user directory found in /home")
+        })
+}
 
 fn main() {
     std::panic::set_hook(Box::new(|info| eprintln!("PANIC: {info}")));
@@ -24,6 +36,7 @@ fn main() {
 }
 
 fn build_ui(app: &gtk::Application) {
+    let username = get_username();
     let ui::Widgets {
         window,
         hours,
@@ -37,7 +50,7 @@ fn build_ui(app: &gtk::Application) {
     setup_dot_pulse(&dot);
 
     let authenticating = Arc::new(AtomicBool::new(false));
-    setup_keyboard(&window, &dot, &authenticating);
+    setup_keyboard(&window, &dot, &authenticating, &username);
 
     window.present();
 }
@@ -103,11 +116,13 @@ fn setup_keyboard(
     window: &gtk::ApplicationWindow,
     dot: &gtk::Box,
     authenticating: &Arc<AtomicBool>,
+    username: &str,
 ) {
     let password = Rc::new(RefCell::new(Zeroizing::new(String::new())));
     let auth_active = authenticating.clone();
     let key_ctrl = gtk::EventControllerKey::new();
 
+    let username = Arc::new(username.to_owned());
     key_ctrl.connect_key_pressed(clone!(
         #[weak]
         dot,
@@ -129,9 +144,10 @@ fn setup_keyboard(
 
                     let auth_done = auth_active.clone();
                     let dot_weak = glib::SendWeakRef::from(dot.downgrade());
+                    let username = username.clone();
 
                     std::thread::spawn(move || {
-                        let result = auth::authenticate(USERNAME, &pass);
+                        let result = auth::authenticate(&username, &pass);
                         auth_done.store(false, Ordering::SeqCst);
                         match result {
                             Ok(()) => std::process::exit(0),
